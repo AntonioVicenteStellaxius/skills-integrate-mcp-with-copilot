@@ -155,6 +155,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Animated Git-style branch lines
+  function animateBranches() {
+    const canvas = document.getElementById("branch-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+    ctx.clearRect(0, 0, w, h);
+
+    // Draw a few animated branch lines
+    const now = Date.now() / 1000;
+    for (let i = 0; i < 5; i++) {
+      ctx.save();
+      ctx.strokeStyle = `rgba(50,205,50,0.5)`;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      let y = h * (0.15 + 0.15 * i) + 20 * Math.sin(now + i);
+      ctx.moveTo(0, y);
+      for (let x = 0; x < w; x += 40) {
+        y += Math.sin((now * 0.7) + x * 0.01 + i) * 2;
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+    requestAnimationFrame(animateBranches);
+  }
+
   // Initialize app
   fetchActivities();
+  animateBranches();
 });
